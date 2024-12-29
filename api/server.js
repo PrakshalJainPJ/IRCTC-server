@@ -12,4 +12,4 @@ app.get('/api/train-status/:trainNo', async (req, res) => {
     const data = await fetchState.text();
     res.send(data);
 });
-module.exports = app;
+export default app;
