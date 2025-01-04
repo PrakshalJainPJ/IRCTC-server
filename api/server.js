@@ -6,8 +6,8 @@ import fetch from 'node-fetch';
 // const nodemon = require('nodemon')
 const app = express();
 app.use(cors());
-app.get('/api/train-status/:trainNo', async (req, res) => {
-    let url = `https://www.railyatri.in/live-train-status/${req.params.trainNo}`;
+app.get('/api/train-status/:trainNo/:startDay', async (req, res) => {
+    let url = `https://www.railyatri.in/live-train-status/${req.params.trainNo}?start_day=${req.params.startDay}`;
     let fetchState = await fetch(url);
     const data = await fetchState.text();
     res.send(data);
