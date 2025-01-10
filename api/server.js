@@ -10,10 +10,10 @@ app.get('/api/train-status/:trainNo/:startDay', async (req, res) => {
     const dataTrainStatus = await fetchStatus.json();
     res.send(dataTrainStatus);
 });
-app.get('/api/train-name-number', async (req, res) => {
-    let trainNameNumberUrl = 'https://enquiry.indianrail.gov.in/mntes/javascripts/train_data.js?v=2';
+app.get('/api/train-name-number/:train', async (req, res) => {
+    let trainNameNumberUrl = `https://search.railyatri.in/mobile/trainsearch?q=${req.params.train}&slip_type=1`;
     let fetchTrainNameNumber = await fetch(trainNameNumberUrl);
-    const TrainNameNumberData = await fetchTrainNameNumber.text();
+    const TrainNameNumberData = await fetchTrainNameNumber.json();
     res.send(TrainNameNumberData);
 });
 export default app;
