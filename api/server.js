@@ -16,4 +16,10 @@ app.get('/api/train-name-number/:train', async (req, res) => {
     const TrainNameNumberData = await fetchTrainNameNumber.json();
     res.send(TrainNameNumberData);
 });
+app.get('/api/check-pnr-status/:pnr', async (req, res) => {
+    let pnrStatusCheckUrl = `https://www.railyatri.in/_next/data/6433c23273df72096a45d1631h6e91b2/m/pnr-status/${req.params.pnr}.json`;
+    let fetchPnrStatus = await fetch(pnrStatusCheckUrl);
+    const PnrStatusData = await fetchPnrStatus.json();
+    res.send(PnrStatusData);
+});
 export default app;
