@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 
 const app = express();
 
-const whitelist = ['https://myrailmate.vercel.app/search-train', 'https://myrailmate.vercel.app/train-schedule', 'https://myrailmate.vercel.app/train-status'];
+const whitelist = ['https://myrailmate.vercel.app', 'https://myrailmate.vercel.app/search-train', 'https://myrailmate.vercel.app/train-schedule', 'https://myrailmate.vercel.app/train-status'];
 
 app.use(cors({
   origin: function (origin, callback) {
