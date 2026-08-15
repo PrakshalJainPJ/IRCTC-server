@@ -27,7 +27,21 @@ const searchTrains = async (req, res) => {
         const [day, month, year] = date.split('-');
         const formattedDate = `${year}${month}${day}`;
 
-        let fetchStatus = await fetch(`https://railways.makemytrip.com/api/tbsWithAvailabilityAndRecommendation/${fromStation}/${toStation}/${formattedDate}?supportLadiesQuota=true`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+
+        let fetchStatus = await fetch(`https://railways.makemytrip.com/api/tbsWithAvailabilityAndRecommendation/${fromStation}/${toStation}/${formattedDate}?supportLadiesQuota=true`, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*',
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Origin': 'https://www.makemytrip.com',
+                'Referer': 'https://www.makemytrip.com/'
+            },
+            signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
         const dataTrainStatus = await fetchStatus.json();
         
         // Ensure we send back the array of trains
