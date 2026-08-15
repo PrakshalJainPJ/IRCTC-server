@@ -22,9 +22,20 @@ const searchStation = async (req, res) => {
 };
 const searchTrains = async (req, res) => {
     try {
-        let fetchStatus = await fetch(`https://www.mauryajivlogger.in/api/railway/search?from=${req.params.fromStation}&to=${req.params.toStation}&date=${req.params.date}`);
+        const { fromStation, toStation, date } = req.params;
+        // Convert DD-MM-YYYY to YYYYMMDD
+        const [day, month, year] = date.split('-');
+        const formattedDate = `${year}${month}${day}`;
+
+        let fetchStatus = await fetch(`https://railways.makemytrip.com/api/tbsWithAvailabilityAndRecommendation/${fromStation}/${toStation}/${formattedDate}?supportLadiesQuota=true`);
         const dataTrainStatus = await fetchStatus.json();
-        res.send(dataTrainStatus);
+        
+        // Ensure we send back the array of trains
+        if (dataTrainStatus && dataTrainStatus.otherDayTrainsList) {
+            res.send({ success: true, data: dataTrainStatus.otherDayTrainsList });
+        } else {
+            res.send({ success: true, data: [] });
+        }
     } catch (error) {
         console.error('Error fetching trains:', error);
         res.status(500).json({ success: false, message: 'Failed to fetch trains.' });
